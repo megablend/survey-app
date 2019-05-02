@@ -15,6 +15,7 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -33,6 +34,7 @@ public class Answer extends DateCreated {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
+    @NotBlank(message = "The answer to this question must be provided")
     @Column(nullable = false)
     private String  answer;
     
