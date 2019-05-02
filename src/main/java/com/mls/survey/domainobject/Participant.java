@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -32,7 +32,7 @@ public class Participant extends DateCreated {
     @Column(nullable = false)
     private String email;
     
-    @Pattern(regexp = "", message = "Please provide the phone number")
+    @NotBlank(message = "Please provide the phone number")
     @Column(nullable = false)
     private String phoneNumber;
     

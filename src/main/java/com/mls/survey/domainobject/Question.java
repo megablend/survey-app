@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -29,6 +30,7 @@ public class Question extends DateCreated {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
+    @NotBlank(message = "Question not provided")
     @Column(nullable = false, unique = true)
     private String  question;
     
