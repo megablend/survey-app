@@ -7,6 +7,7 @@ package com.mls.survey.mapper;
 
 import com.mls.survey.datatransferobject.AnswerDTO;
 import com.mls.survey.domainobject.Answer;
+import com.mls.survey.domainobject.Question;
 import java.util.Collection;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
@@ -18,6 +19,10 @@ import static java.util.stream.Collectors.toList;
 public class AnswerMapper {
     
     private AnswerMapper() {} 
+    
+    public static Answer makeAnswer(AnswerDTO answerDto, Question question) {
+        return new Answer(answerDto.getAnswer(), question);
+    }
     
     /**
      * Map answer DTO

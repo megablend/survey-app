@@ -5,13 +5,49 @@
  */
 package com.mls.survey.service.answer;
 
+import com.mls.survey.datatransferobject.AnswerDTO;
+import com.mls.survey.domainobject.Answer;
 import com.mls.survey.domainobject.Question;
+import com.mls.survey.exception.ConstraintsViolationException;
+import com.mls.survey.exception.EntityNotFoundException;
 
 /**
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
 public interface AnswerService {
+    
+    /**
+     * Find an answer by ID
+     * @param id
+     * @return
+     * @throws EntityNotFoundException 
+     */
+    Answer find(long id) throws EntityNotFoundException;
+    
+    /**
+     * Creates a new answer
+     * @param answer
+     * @return
+     * @throws ConstraintsViolationException 
+     */
+    Answer create(Answer answer) throws ConstraintsViolationException;
+    
+    /**
+     * Update answer
+     * @param id
+     * @param answerDto
+     * @throws ConstraintsViolationException
+     * @throws EntityNotFoundException 
+     */
+    void update(long id, AnswerDTO answerDto) throws ConstraintsViolationException, EntityNotFoundException;
+    
+    /**
+     * Deletes an answer
+     * @param id
+     * @throws EntityNotFoundException 
+     */
+    void delete(long id) throws EntityNotFoundException;
     
     /**
      * Deletes answers by question

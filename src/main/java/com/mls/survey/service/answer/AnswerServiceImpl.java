@@ -6,8 +6,14 @@
 package com.mls.survey.service.answer;
 
 import com.mls.survey.dataaccessobject.AnswerRepo;
+import com.mls.survey.datatransferobject.AnswerDTO;
+import com.mls.survey.domainobject.Answer;
 import com.mls.survey.domainobject.Question;
+import com.mls.survey.exception.ConstraintsViolationException;
+import com.mls.survey.exception.EntityNotFoundException;
+import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,7 +33,41 @@ public class AnswerServiceImpl implements AnswerService {
     /** {@inheritDoc} */
     @Override
     public void deleteAnswersByQuestion(Question question) {
-        answerRepo.deleteAnswers(question);
+        answerRepo.deleteByQuestion(question.getId());
+    }
+
+    @Override
+    public Answer find(long id) throws EntityNotFoundException {
+        return findAnswer(id);
+    }
+
+    @Transactional
+    @Override
+    public Answer create(Answer answer) throws ConstraintsViolationException {
+        Answer savedAnswer;
+        try {
+            savedAnswer = answerRepo.save(answer);
+        } catch (DataIntegrityViolationException e) {
+            log.warn("ConstraintsViolationException while creating answer: {}", answer, e);
+            throw new ConstraintsViolationException(e.getMessage());
+        }
+        return savedAnswer;
+    }
+
+    @Override
+    public void update(long id, AnswerDTO answerDto) throws ConstraintsViolationException, EntityNotFoundException {
+        Answer answer = findAnswer(id);
+        answer.setAnswer(answerDto.getAnswer());
+    }
+
+    @Override
+    public void delete(long id) throws EntityNotFoundException {
+        Answer answer = findAnswer(id);
+        answerRepo.delete(answer);
+    }
+    
+    private Answer findAnswer(long id) throws EntityNotFoundException {
+        return answerRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Unable to find the answer with the ID " + id));
     }
     
 }

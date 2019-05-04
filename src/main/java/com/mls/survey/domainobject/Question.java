@@ -39,9 +39,6 @@ public class Question extends DateCreated {
     @OneToMany(mappedBy = "question")
     private List<Answer> answers;
     
-    @Column(nullable = false)
-    private boolean deleted = false;
-    
     public Question(String question) {
         this.question = question;
     }

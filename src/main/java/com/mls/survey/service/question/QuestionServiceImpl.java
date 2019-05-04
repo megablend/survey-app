@@ -36,7 +36,7 @@ public class QuestionServiceImpl implements QuestionService {
     /** {@inheritDoc} */
     @Override
     public Question find(long id) throws EntityNotFoundException {
-        return questionRepo.findByIdAndDeleted(id, false).orElseThrow(() -> new EntityNotFoundException("Unable to find the question with the ID " + id));
+        return findQuestion(id);
     }
 
     /** {@inheritDoc} */
@@ -67,7 +67,7 @@ public class QuestionServiceImpl implements QuestionService {
     public void delete(long id) throws EntityNotFoundException {
         Question question = findQuestion(id);
         answerService.deleteAnswersByQuestion(question); // delete all answers associated with this question if any using soft-delete
-        question.setDeleted(true);
+        questionRepo.delete(question);
     }
     
     private Question findQuestion(long id) throws EntityNotFoundException {
@@ -77,7 +77,7 @@ public class QuestionServiceImpl implements QuestionService {
     /** {@inheritDoc} */
     @Override
     public List<Question> getQuestions() {
-        return questionRepo.findByDeleted(false);
+        return questionRepo.findAll();
     }
     
 }

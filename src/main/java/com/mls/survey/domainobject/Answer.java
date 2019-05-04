@@ -43,9 +43,6 @@ public class Answer extends DateCreated {
     @JoinColumn(name = "question", referencedColumnName ="id")
     private Question question;
     
-    @Column(nullable = false)
-    private boolean deleted = false;
-    
     public Answer(String answer, Question question) {
         this.answer = answer;
         this.question = question;
