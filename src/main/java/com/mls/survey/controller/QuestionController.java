@@ -31,6 +31,12 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
     
+    /**
+     * Create a new question
+     * @param questionDto
+     * @return
+     * @throws ConstraintsViolationException 
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public QuestionDTO createQuestion(@Valid @RequestBody QuestionDTO questionDto) throws ConstraintsViolationException {
