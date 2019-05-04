@@ -14,5 +14,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SurveyResponseRepo extends JpaRepository<SurveyResponse, Long> {
     
-    SurveyResponse findByIdAndDeleted(long id, boolean deleted);
 }
