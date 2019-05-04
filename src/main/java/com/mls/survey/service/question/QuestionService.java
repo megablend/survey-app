@@ -5,6 +5,7 @@
  */
 package com.mls.survey.service.question;
 
+import com.mls.survey.datatransferobject.QuestionDTO;
 import com.mls.survey.domainobject.Question;
 import com.mls.survey.exception.ConstraintsViolationException;
 import com.mls.survey.exception.EntityNotFoundException;
@@ -33,11 +34,12 @@ public interface QuestionService {
     
     /**
      * Update question
-     * @param question
+     * @param id
+     * @param questionDto
      * @throws ConstraintsViolationException
      * @throws EntityNotFoundException 
      */
-    void update(Question question) throws ConstraintsViolationException, EntityNotFoundException;
+    void update(long id, QuestionDTO questionDto) throws ConstraintsViolationException, EntityNotFoundException;
     
     /**
      * Deletes a question
