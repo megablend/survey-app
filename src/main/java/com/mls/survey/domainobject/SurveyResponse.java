@@ -5,18 +5,15 @@
  */
 package com.mls.survey.domainobject;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.persistence.UniqueConstraint;
 import lombok.Data;
 
 /**
@@ -24,30 +21,31 @@ import lombok.Data;
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
 @Entity
-@Table(name = "answers", indexes = {
-    @Index(columnList = "answer", name = "idx_answer")
+@Table(name = "survey_reponses", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"answer", "participant"}, name = "uc_asnwer_participant")
 })
 @Data
-public class Answer extends DateCreated {
+public class SurveyResponse extends DateCreated {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
-    @NotBlank(message = "The answer to this question must be provided")
-    @Column(nullable = false)
-    private String  answer;
-    
-    @NotNull(message = "The question for this answer must not be null")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "question", referencedColumnName ="id")
     private Question question;
     
-    @Column(nullable = false)
-    private boolean deleted = false;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "answer", referencedColumnName ="id")
+    private Answer answer;
     
-    public Answer(String answer, Question question) {
-        this.answer = answer;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "participant", referencedColumnName ="id")
+    private Participant participant;
+    
+    public SurveyResponse(Question question, Answer answer, Participant participant) {
         this.question = question;
+        this.answer = answer;
+        this.participant = participant;
     }
 }

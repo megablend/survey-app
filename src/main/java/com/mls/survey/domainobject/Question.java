@@ -34,6 +34,9 @@ public class Question extends DateCreated {
     @Column(nullable = false, unique = true)
     private String  question;
     
+    @Column(nullable = false)
+    private boolean deleted = false;
+    
     public Question(String question) {
         this.question = question;
     }
