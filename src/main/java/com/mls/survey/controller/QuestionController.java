@@ -8,13 +8,20 @@ package com.mls.survey.controller;
 import com.mls.survey.datatransferobject.QuestionDTO;
 import com.mls.survey.domainobject.Question;
 import com.mls.survey.exception.ConstraintsViolationException;
+import com.mls.survey.exception.EntityNotFoundException;
 import static com.mls.survey.mapper.QuestionMapper.makeQuestion;
 import static com.mls.survey.mapper.QuestionMapper.makeQuestionDTO;
+import static com.mls.survey.mapper.QuestionMapper.makeQuestionDTOList;
 import com.mls.survey.service.question.QuestionService;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -42,5 +49,47 @@ public class QuestionController {
     public QuestionDTO createQuestion(@Valid @RequestBody QuestionDTO questionDto) throws ConstraintsViolationException {
         Question question = makeQuestion(questionDto);
         return makeQuestionDTO(questionService.create(question));
+    }
+    
+    /**
+     * Update Question
+     * @param id
+     * @param questionDto
+     * @throws ConstraintsViolationException
+     * @throws EntityNotFoundException 
+     */
+    @PutMapping("{id}")
+    public void updateQuestion(@PathVariable long id, @Valid @RequestBody QuestionDTO questionDto) throws ConstraintsViolationException, EntityNotFoundException {
+        questionService.update(id, questionDto);
+    }
+    
+    /**
+     * Delete Question
+     * @param id
+     * @throws EntityNotFoundException 
+     */
+    @DeleteMapping("{id}")
+    public void deleteQuestion(@PathVariable long id) throws EntityNotFoundException {
+        questionService.delete(id);
+    }
+    
+    /**
+     * Get all questions
+     * @return 
+     */
+    @GetMapping
+    public List<QuestionDTO> getQuestions() {
+        return makeQuestionDTOList(questionService.getQuestions());
+    }
+    
+    /**
+     * Get question
+     * @param id
+     * @return
+     * @throws EntityNotFoundException 
+     */
+    @GetMapping("{id}")
+    public QuestionDTO getQuestion(@PathVariable long id) throws EntityNotFoundException {
+        return makeQuestionDTO(questionService.find(id));
     }
 }

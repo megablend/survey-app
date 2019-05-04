@@ -6,6 +6,7 @@
 package com.mls.survey.dataaccessobject;
 
 import com.mls.survey.domainobject.Question;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,4 +17,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QuestionRepo extends JpaRepository<Question, Long> {
     
     Optional<Question> findByIdAndDeleted(long id, boolean deleted);
+    
+    List<Question> findByDeleted(boolean deleted);
 }

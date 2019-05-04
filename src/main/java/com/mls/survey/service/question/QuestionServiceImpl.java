@@ -10,6 +10,8 @@ import com.mls.survey.datatransferobject.QuestionDTO;
 import com.mls.survey.domainobject.Question;
 import com.mls.survey.exception.ConstraintsViolationException;
 import com.mls.survey.exception.EntityNotFoundException;
+import com.mls.survey.service.answer.AnswerService;
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,15 +26,17 @@ import org.springframework.stereotype.Service;
 public class QuestionServiceImpl implements QuestionService {
     
     private final QuestionRepo questionRepo;
+    private final AnswerService answerService;
     
-    public QuestionServiceImpl(QuestionRepo questionRepo) {
+    public QuestionServiceImpl(QuestionRepo questionRepo, AnswerService answerService) {
         this.questionRepo = questionRepo;
+        this.answerService = answerService;
     }
 
     /** {@inheritDoc} */
     @Override
     public Question find(long id) throws EntityNotFoundException {
-        return findQuestion(id);
+        return questionRepo.findByIdAndDeleted(id, false).orElseThrow(() -> new EntityNotFoundException("Unable to find the question with the ID " + id));
     }
 
     /** {@inheritDoc} */
@@ -62,11 +66,18 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void delete(long id) throws EntityNotFoundException {
         Question question = findQuestion(id);
+        answerService.deleteAnswersByQuestion(question); // delete all answers associated with this question if any using soft-delete
         question.setDeleted(true);
     }
     
     private Question findQuestion(long id) throws EntityNotFoundException {
         return questionRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Unable to find the question with the ID " + id));
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Question> getQuestions() {
+        return questionRepo.findByDeleted(false);
     }
     
 }

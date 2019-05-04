@@ -5,10 +5,17 @@
  */
 package com.mls.survey.service.answer;
 
+import com.mls.survey.domainobject.Question;
+
 /**
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
 public interface AnswerService {
     
+    /**
+     * Deletes answers by question
+     * @param question 
+     */
+    void deleteAnswersByQuestion(Question question);
 }

@@ -5,10 +5,29 @@
  */
 package com.mls.survey.service.answer;
 
+import com.mls.survey.dataaccessobject.AnswerRepo;
+import com.mls.survey.domainobject.Question;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 /**
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
-public class AnswerServiceImpl {
+@Service
+@Slf4j
+public class AnswerServiceImpl implements AnswerService {
+    
+    private final AnswerRepo answerRepo;
+    
+    public AnswerServiceImpl(AnswerRepo answerRepo) {
+        this.answerRepo = answerRepo;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void deleteAnswersByQuestion(Question question) {
+        answerRepo.deleteAnswers(question);
+    }
     
 }

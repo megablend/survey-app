@@ -9,6 +9,7 @@ import com.mls.survey.datatransferobject.QuestionDTO;
 import com.mls.survey.domainobject.Question;
 import com.mls.survey.exception.ConstraintsViolationException;
 import com.mls.survey.exception.EntityNotFoundException;
+import java.util.List;
 
 /**
  *
@@ -47,4 +48,10 @@ public interface QuestionService {
      * @throws EntityNotFoundException 
      */
     void delete(long id) throws EntityNotFoundException;
+    
+    /**
+     * Get all questions
+     * @return 
+     */
+    List<Question> getQuestions();
 }

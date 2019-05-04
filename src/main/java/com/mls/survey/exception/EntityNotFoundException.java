@@ -3,7 +3,7 @@ package com.mls.survey.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Could not find entity with the provided id.")
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Could not find entity with the provided id.")
 public class EntityNotFoundException extends Exception
 {
     static final long serialVersionUID = -3387516993334229948L;

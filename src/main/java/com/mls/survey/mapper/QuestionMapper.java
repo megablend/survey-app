@@ -6,7 +6,9 @@
 package com.mls.survey.mapper;
 
 import com.mls.survey.datatransferobject.QuestionDTO;
+import com.mls.survey.datatransferobject.QuestionDTO.QuestionDTOBuilder;
 import com.mls.survey.domainobject.Question;
+import static com.mls.survey.mapper.AnswerMapper.makeAnswerDTOList;
 import java.util.Collection;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
@@ -34,7 +36,13 @@ public class QuestionMapper {
      * @return 
      */
     public static QuestionDTO makeQuestionDTO(Question question) {
-        return new QuestionDTO(question.getQuestion());
+        QuestionDTOBuilder builder = QuestionDTO.builder().setId(question.getId())
+                                                          .setQuestion(question.getQuestion());
+        
+        if (null != question.getAnswers() && !question.getAnswers().isEmpty()) 
+            builder.setAnswers(makeAnswerDTOList(question.getAnswers()));
+            
+        return builder.build();
     }
     
     /**
