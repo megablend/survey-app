@@ -7,6 +7,7 @@ package com.mls.survey.controller;
 
 import com.mls.survey.datatransferobject.QuestionDTO;
 import com.mls.survey.domainobject.Question;
+import com.mls.survey.exception.EntityNotFoundException;
 import static com.mls.survey.mapper.QuestionMapper.makeQuestionDTO;
 import com.mls.survey.service.question.QuestionService;
 import com.mls.survey.service.response.SurveyResponseService;
@@ -31,6 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -126,5 +128,22 @@ public class QuestionControllerTest {
                     .andExpect(status().isOk());
         
         verify(questionService, times(1)).update(isA(Long.class), isA(QuestionDTO.class));
+    }
+    
+    /**
+     * Test case for delete question
+     * @throws Exception 
+     */
+    @Test
+    public void testDeleteQuestion() throws Exception {
+        
+        // mock dependencies
+        doNothing().when(questionService).delete(isA(Long.class));
+        
+        mvc.perform(delete("/v1/questions/1")
+                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+        
+        verify(questionService, times(1)).delete(isA(Long.class));
     }
 }
