@@ -6,6 +6,7 @@
 package com.mls.survey.controller;
 
 import com.mls.survey.datatransferobject.QuestionDTO;
+import com.mls.survey.datatransferobject.ResponseDistributionDTO;
 import com.mls.survey.domainobject.Question;
 import static com.mls.survey.mapper.QuestionMapper.makeQuestionDTO;
 import static com.mls.survey.mapper.QuestionMapper.makeQuestionDTOList;
@@ -14,6 +15,7 @@ import com.mls.survey.service.response.SurveyResponseService;
 import static com.mls.survey.util.Util.convertObjectToJson;
 import static com.mls.survey.util.Util.mockQuestion;
 import static com.mls.survey.util.Util.mockQuestions;
+import static com.mls.survey.util.Util.mockResponseDistribution;
 import org.hamcrest.Matchers;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -190,5 +192,30 @@ public class QuestionControllerTest {
         verify(questionService, times(1)).find(isA(Long.class));
         assertEquals(result.getResponse().getContentAsString(), 
                 convertObjectToJson(makeQuestionDTO(mockQuestion())));
+    }
+    
+    /**
+     * Test case to get question responses
+     * @throws Exception 
+     */
+    @Test
+    public void testGetResponses() throws Exception {
+        
+        // mock dependencies
+        ResponseDistributionDTO response = mockResponseDistribution();
+        when(questionService.find(isA(Long.class))).thenReturn(mockQuestion());
+        when(surveyResponseService.getResponsesToQuestion(isA(Question.class))).thenReturn(response);
+        
+        MvcResult result = mvc.perform(get("/v1/questions/response/1")
+                            .accept(MediaType.APPLICATION_JSON))
+                            .andExpect(status().isOk())
+                            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                            .andExpect(jsonPath("$.total", Matchers.is(response.getTotal())))
+                            .andExpect(jsonPath("$.answers[0].answer", Matchers.is(response.getAnswers().get(0).getAnswer())))
+                            .andExpect(jsonPath("$.answers[0].percentage", Matchers.is(response.getAnswers().get(0).getPercentage()))).andReturn();
+        
+        
+        assertEquals(result.getResponse().getContentAsString(), 
+                convertObjectToJson(response));
     }
 }

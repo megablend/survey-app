@@ -7,6 +7,8 @@ package com.mls.survey.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mls.survey.datatransferobject.AnswerDistributionDTO;
+import com.mls.survey.datatransferobject.ResponseDistributionDTO;
 import com.mls.survey.domainobject.Question;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
@@ -37,6 +39,23 @@ public final class Util {
     public static List<Question> mockQuestions() {
         return Stream.of(new Question("Do you love coding?"), 
                          new Question("How many hours do you spend coding?")).collect(toList());
+    }
+    
+    /**
+     * Mock Response Distribution
+     * @return 
+     */
+    public static ResponseDistributionDTO mockResponseDistribution() {
+        return new ResponseDistributionDTO(2, mockResponseAnswers());
+    }
+    
+    /**
+     * Mock answer distribution
+     * @return 
+     */
+    public static List<AnswerDistributionDTO> mockResponseAnswers() {
+        return Stream.of(new AnswerDistributionDTO("yes", "50.0%"),
+                         new AnswerDistributionDTO("no", "50.0%")).collect(toList());
     }
     
     /**
