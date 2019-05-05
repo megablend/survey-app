@@ -37,7 +37,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -84,7 +83,6 @@ public class QuestionControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(request)
                             .accept(MediaType.APPLICATION_JSON))
-                            .andDo(print())
                             .andExpect(status().isBadRequest())
                             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                             .andExpect(jsonPath("$.error[0]", Matchers.is("The question must be provided")));
@@ -100,7 +98,6 @@ public class QuestionControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(request)
                             .accept(MediaType.APPLICATION_JSON))
-                            .andDo(print())
                             .andExpect(status().isCreated())
                             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                             .andExpect(jsonPath("$.question", Matchers.is(question.getQuestion()))).andReturn();
@@ -108,8 +105,6 @@ public class QuestionControllerTest {
         verify(questionService, times(1)).create(any());
         assertEquals(result.getResponse().getContentAsString(), 
                             convertObjectToJson(makeQuestionDTO(question)));
-        
-        // with invalid 
     }
     
     /**
@@ -128,7 +123,6 @@ public class QuestionControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(request)
                     .accept(MediaType.APPLICATION_JSON))
-                    .andDo(print())
                     .andExpect(status().isOk());
         
         verify(questionService, times(1)).update(isA(Long.class), isA(QuestionDTO.class));

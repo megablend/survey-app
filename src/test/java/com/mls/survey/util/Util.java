@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mls.survey.datatransferobject.AnswerDistributionDTO;
 import com.mls.survey.datatransferobject.ResponseDistributionDTO;
+import com.mls.survey.domainobject.Answer;
 import com.mls.survey.domainobject.Question;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
@@ -39,6 +40,16 @@ public final class Util {
     public static List<Question> mockQuestions() {
         return Stream.of(new Question("Do you love coding?"), 
                          new Question("How many hours do you spend coding?")).collect(toList());
+    }
+    
+    /**
+     * Mock answers
+     * @return 
+     */
+    public static List<Answer> mockAnswers() {
+        Question question = mockQuestion();
+        return Stream.of(new Answer("yes", question),
+                        new Answer("no", question)).collect(toList());
     }
     
     /**
