@@ -7,12 +7,13 @@ package com.mls.survey.controller;
 
 import com.mls.survey.datatransferobject.QuestionDTO;
 import com.mls.survey.domainobject.Question;
-import com.mls.survey.exception.EntityNotFoundException;
 import static com.mls.survey.mapper.QuestionMapper.makeQuestionDTO;
+import static com.mls.survey.mapper.QuestionMapper.makeQuestionDTOList;
 import com.mls.survey.service.question.QuestionService;
 import com.mls.survey.service.response.SurveyResponseService;
 import static com.mls.survey.util.Util.convertObjectToJson;
 import static com.mls.survey.util.Util.mockQuestion;
+import static com.mls.survey.util.Util.mockQuestions;
 import org.hamcrest.Matchers;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -33,6 +34,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -145,5 +147,28 @@ public class QuestionControllerTest {
                     .andExpect(status().isOk());
         
         verify(questionService, times(1)).delete(isA(Long.class));
+    }
+    
+    /**
+     * Test case for get questions
+     * @throws Exception 
+     */
+    @Test
+    public void testGetQuestions() throws Exception {
+        
+        // mock dependencies
+        when(questionService.getQuestions()).thenReturn(mockQuestions());
+        
+        MvcResult result = mvc.perform(get("/v1/questions")
+                            .accept(MediaType.APPLICATION_JSON))
+                            .andDo(print())
+                            .andExpect(status().isOk())
+                            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                            .andExpect(jsonPath("$.[0].question", Matchers.is(mockQuestions().get(0).getQuestion())))
+                            .andExpect(jsonPath("$.[1].question", Matchers.is(mockQuestions().get(1).getQuestion()))).andReturn();
+        
+        verify(questionService, times(1)).getQuestions();
+        assertEquals(result.getResponse().getContentAsString(), 
+                convertObjectToJson(makeQuestionDTOList(mockQuestions())));
     }
 }
