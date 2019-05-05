@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -26,6 +27,7 @@ import lombok.Data;
     @UniqueConstraint(columnNames = {"answer", "participant"}, name = "uc_asnwer_participant")
 })
 @Data
+@NoArgsConstructor
 public class SurveyResponse extends DateCreated {
     
     @Id

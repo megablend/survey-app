@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -26,6 +27,7 @@ import lombok.Data;
     @Index(columnList = "question", name = "idx_question")
 })
 @Data
+@NoArgsConstructor
 public class Question extends DateCreated {
     
     @Id

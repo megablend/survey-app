@@ -9,11 +9,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 /**
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
+@Validated
 @Data
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)

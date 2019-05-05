@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
@@ -28,6 +29,7 @@ import lombok.Data;
     @Index(columnList = "answer", name = "idx_answer")
 })
 @Data
+@NoArgsConstructor
 public class Answer extends DateCreated {
     
     @Id

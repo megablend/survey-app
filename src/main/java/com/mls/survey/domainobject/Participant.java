@@ -10,18 +10,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
 @Entity
-@Table(name = "participants")
+@Table(name = "participants", indexes = {
+    @Index(columnList = "email", name = "idx_email_participant")
+})
 @Data
+@NoArgsConstructor
 public class Participant extends DateCreated {
     
     @Id

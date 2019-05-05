@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mls.survey.datatransferobject.projection;
+package com.mls.survey.datatransferobject;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
-public interface AnswerOnly {
-    
-    QuestionAnswer getAnswer();
-    
-    interface QuestionAnswer {
-        String getAnswer();
-    }
+@Data
+@AllArgsConstructor
+public class ErrorDTO {
+    private Object error;
 }

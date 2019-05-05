@@ -11,6 +11,7 @@ import com.mls.survey.datatransferobject.ParticipantResponseDTO;
 import com.mls.survey.datatransferobject.ResponseDTO;
 import com.mls.survey.datatransferobject.ResponseDistributionDTO;
 import com.mls.survey.datatransferobject.projection.AnswerOnly;
+import com.mls.survey.datatransferobject.projection.AnswerOnly.QuestionAnswer;
 import com.mls.survey.domainobject.Answer;
 import com.mls.survey.domainobject.Participant;
 import com.mls.survey.domainobject.Question;
@@ -77,11 +78,11 @@ public class SurveyResponseServiceImpl implements SurveyResponseService {
     @Override
     public ResponseDistributionDTO getResponsesToQuestion(Question question) {
         List<AnswerOnly> responses = surveyResponseRepo.findByQuestion(question);
-        Map<Answer, List<AnswerOnly>> answersGrouped = responses.stream().collect(groupingBy(AnswerOnly::getAnswer));
+        Map<QuestionAnswer, List<AnswerOnly>> answersGrouped = responses.stream().collect(groupingBy(AnswerOnly::getAnswer));
         return computeAnswersDistribution(responses.size(), answersGrouped);
     }
     
-    private ResponseDistributionDTO computeAnswersDistribution(int total, Map<Answer, List<AnswerOnly>> answersGrouped) {
+    private ResponseDistributionDTO computeAnswersDistribution(int total, Map<QuestionAnswer, List<AnswerOnly>> answersGrouped) {
         List<AnswerDistributionDTO> answersStat = answersGrouped.entrySet().stream()
                                                                            .map(e -> getAnswersDistribution(e, total))
                                                                            .collect(toList());
@@ -89,7 +90,7 @@ public class SurveyResponseServiceImpl implements SurveyResponseService {
     }
     
     private AnswerDistributionDTO getAnswersDistribution(Entry entry, int total) {
-        Answer answer = (Answer) entry.getKey();
+        QuestionAnswer answer = (QuestionAnswer) entry.getKey();
         List<AnswerOnly> questionAnswers = (List<AnswerOnly>) entry.getValue();
         return new AnswerDistributionDTO(answer.getAnswer(), decimalFormat.format(answersPercentage(questionAnswers.size(), total)) + "%");
     }
