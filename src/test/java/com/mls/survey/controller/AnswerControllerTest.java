@@ -5,6 +5,7 @@
  */
 package com.mls.survey.controller;
 
+import com.mls.survey.datatransferobject.AnswerDTO;
 import com.mls.survey.domainobject.Answer;
 import com.mls.survey.exception.ConstraintsViolationException;
 import static com.mls.survey.mapper.AnswerMapper.makeAnswerDTOList;
@@ -21,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,8 +34,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,6 +68,10 @@ public class AnswerControllerTest {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
     
+    /**
+     * Test case for create answer
+     * @throws Exception 
+     */
     @Test
     public void testCreateAnswer() throws Exception {
         
@@ -107,5 +114,43 @@ public class AnswerControllerTest {
         verify(answerService, times(1)).create(any());
         assertEquals(result.getResponse().getContentAsString(), 
                             convertObjectToJson(makeAnswerDTOList(answers)));
+    }
+    
+    /**
+     * Test case for update answer
+     * @throws Exception 
+     */
+    @Test
+    public void testUpdateAnswer() throws Exception {
+        
+        String request = "{ \"answer\": \"yes yes\" }";
+        
+        // mock dependencies
+        doNothing().when(answerService).update(isA(Long.class), isA(AnswerDTO.class));
+        
+        mvc.perform(put("/v1/answers/1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(request)
+                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+        
+        verify(answerService, times(1)).update(isA(Long.class), isA(AnswerDTO.class));
+    }
+    
+    /**
+     * Test case for delete answer
+     * @throws Exception 
+     */
+    @Test
+    public void testDeleteAnswer() throws Exception {
+        
+        // mock dependencies
+        doNothing().when(answerService).delete(isA(Long.class));
+        
+        mvc.perform(delete("/v1/answers/1")
+                    .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+        
+        verify(answerService, times(1)).delete(isA(Long.class));
     }
 }
