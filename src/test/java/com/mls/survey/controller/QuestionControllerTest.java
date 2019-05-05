@@ -161,7 +161,6 @@ public class QuestionControllerTest {
         
         MvcResult result = mvc.perform(get("/v1/questions")
                             .accept(MediaType.APPLICATION_JSON))
-                            .andDo(print())
                             .andExpect(status().isOk())
                             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                             .andExpect(jsonPath("$.[0].question", Matchers.is(mockQuestions().get(0).getQuestion())))
@@ -170,5 +169,26 @@ public class QuestionControllerTest {
         verify(questionService, times(1)).getQuestions();
         assertEquals(result.getResponse().getContentAsString(), 
                 convertObjectToJson(makeQuestionDTOList(mockQuestions())));
+    }
+    
+    /**
+     * Test case for get question
+     * @throws Exception 
+     */
+    @Test
+    public void testGetQuestion() throws Exception {
+        
+        // mock dependencies
+        when(questionService.find(isA(Long.class))).thenReturn(mockQuestion());
+        
+        MvcResult result = mvc.perform(get("/v1/questions/1")
+                            .accept(MediaType.APPLICATION_JSON))
+                            .andExpect(status().isOk())
+                            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                            .andExpect(jsonPath("$.question", Matchers.is(mockQuestion().getQuestion()))).andReturn();
+        
+        verify(questionService, times(1)).find(isA(Long.class));
+        assertEquals(result.getResponse().getContentAsString(), 
+                convertObjectToJson(makeQuestionDTO(mockQuestion())));
     }
 }
