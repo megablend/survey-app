@@ -90,7 +90,7 @@ public class SurveyResponseServiceImpl implements SurveyResponseService {
     
     private AnswerDistributionDTO getAnswersDistribution(Entry entry, int total) {
         Answer answer = (Answer) entry.getKey();
-        List<AnswerOnly> responses = (List<AnswerOnly>) entry.getValue();
-        return new AnswerDistributionDTO(answer.getAnswer(), decimalFormat.format(answersPercentage(responses.size(), total)) + "%");
+        List<AnswerOnly> questionAnswers = (List<AnswerOnly>) entry.getValue();
+        return new AnswerDistributionDTO(answer.getAnswer(), decimalFormat.format(answersPercentage(questionAnswers.size(), total)) + "%");
     }
 }
