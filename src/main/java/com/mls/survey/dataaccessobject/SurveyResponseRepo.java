@@ -5,7 +5,7 @@
  */
 package com.mls.survey.dataaccessobject;
 
-import com.mls.survey.datatransferobject.projection.AnswerOnly;
+import com.mls.survey.dataaccessobject.projection.AnswerOnly;
 import com.mls.survey.domainobject.Answer;
 import com.mls.survey.domainobject.Participant;
 import com.mls.survey.domainobject.Question;
