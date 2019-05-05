@@ -16,12 +16,16 @@ import static java.util.stream.Collectors.toList;
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
-public class AnswerMapper {
+public final class AnswerMapper {
     
     private AnswerMapper() {} 
     
     public static Answer makeAnswer(AnswerDTO answerDto, Question question) {
         return new Answer(answerDto.getAnswer(), question);
+    }
+    
+    public static List<Answer> makeAnswerList(List<AnswerDTO> answerDTOs, Question question) {
+        return answerDTOs.stream().map(a -> makeAnswer(a, question)).collect(toList());
     }
     
     /**

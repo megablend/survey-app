@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -31,14 +32,17 @@ public class SurveyResponse extends DateCreated {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
+    @NotNull(message = "The question must not be null")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "question", referencedColumnName ="id")
     private Question question;
     
+    @NotNull(message = "The answer must not be null")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "answer", referencedColumnName ="id")
     private Answer answer;
     
+    @NotNull(message = "The participant must not be null")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "participant", referencedColumnName ="id")
     private Participant participant;

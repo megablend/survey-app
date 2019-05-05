@@ -5,7 +5,12 @@
  */
 package com.mls.survey.dataaccessobject;
 
+import com.mls.survey.datatransferobject.projection.AnswerOnly;
+import com.mls.survey.domainobject.Answer;
+import com.mls.survey.domainobject.Participant;
+import com.mls.survey.domainobject.Question;
 import com.mls.survey.domainobject.SurveyResponse;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -14,4 +19,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface SurveyResponseRepo extends JpaRepository<SurveyResponse, Long> {
     
+    SurveyResponse findByQuestionAndParticipantAndAnswer(Question question, Participant participant, Answer answer);
+    
+    List<AnswerOnly> findByQuestion(Question question);
 }

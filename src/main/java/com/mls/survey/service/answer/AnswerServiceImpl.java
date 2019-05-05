@@ -11,6 +11,7 @@ import com.mls.survey.domainobject.Answer;
 import com.mls.survey.domainobject.Question;
 import com.mls.survey.exception.ConstraintsViolationException;
 import com.mls.survey.exception.EntityNotFoundException;
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,30 +37,34 @@ public class AnswerServiceImpl implements AnswerService {
         answerRepo.deleteByQuestion(question.getId());
     }
 
+    /** {@inheritDoc} */
     @Override
     public Answer find(long id) throws EntityNotFoundException {
         return findAnswer(id);
     }
 
+    /** {@inheritDoc} */
     @Transactional
     @Override
-    public Answer create(Answer answer) throws ConstraintsViolationException {
-        Answer savedAnswer;
+    public List<Answer> create(List<Answer> answers) throws ConstraintsViolationException {
+        List<Answer> savedAnswers;
         try {
-            savedAnswer = answerRepo.save(answer);
+            savedAnswers = answerRepo.saveAll(answers);
         } catch (DataIntegrityViolationException e) {
-            log.warn("ConstraintsViolationException while creating answer: {}", answer, e);
+            log.warn("ConstraintsViolationException while creating answers", e);
             throw new ConstraintsViolationException(e.getMessage());
         }
-        return savedAnswer;
+        return savedAnswers;
     }
 
+    @Transactional
     @Override
     public void update(long id, AnswerDTO answerDto) throws ConstraintsViolationException, EntityNotFoundException {
         Answer answer = findAnswer(id);
         answer.setAnswer(answerDto.getAnswer());
     }
 
+    @Transactional
     @Override
     public void delete(long id) throws EntityNotFoundException {
         Answer answer = findAnswer(id);

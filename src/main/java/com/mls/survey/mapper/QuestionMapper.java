@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
-public class QuestionMapper {
+public final class QuestionMapper {
     
     private QuestionMapper() {} // prevent this class from being initialized
     

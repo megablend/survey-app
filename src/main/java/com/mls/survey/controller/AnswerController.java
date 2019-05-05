@@ -10,9 +10,10 @@ import com.mls.survey.domainobject.Answer;
 import com.mls.survey.exception.ConstraintsViolationException;
 import com.mls.survey.exception.EntityNotFoundException;
 import com.mls.survey.mapper.AnswerMapper;
-import static com.mls.survey.mapper.AnswerMapper.makeAnswer;
+import static com.mls.survey.mapper.AnswerMapper.makeAnswerList;
 import com.mls.survey.service.answer.AnswerService;
 import com.mls.survey.service.question.QuestionService;
+import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,16 +43,16 @@ public class AnswerController {
     /**
      * Create a new answer
      * @param questionId
-     * @param answerDTO
+     * @param answerDTOs
      * @return
      * @throws ConstraintsViolationException
      * @throws EntityNotFoundException 
      */
     @PostMapping("{questionId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public AnswerDTO createAnswer(@PathVariable long questionId, @Valid @RequestBody AnswerDTO answerDTO) throws ConstraintsViolationException, EntityNotFoundException {
-        Answer answer = makeAnswer(answerDTO, questionService.find(questionId));
-        return AnswerMapper.makeAnswerDTO(answerService.create(answer));
+    public List<AnswerDTO> createAnswer(@PathVariable long questionId, @Valid @RequestBody List<AnswerDTO> answerDTOs) throws ConstraintsViolationException, EntityNotFoundException {
+        List<Answer> answers = makeAnswerList(answerDTOs, questionService.find(questionId));
+        return AnswerMapper.makeAnswerDTOList(answerService.create(answers));
     }
     
     /**

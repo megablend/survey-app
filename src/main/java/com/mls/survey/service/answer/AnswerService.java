@@ -10,6 +10,7 @@ import com.mls.survey.domainobject.Answer;
 import com.mls.survey.domainobject.Question;
 import com.mls.survey.exception.ConstraintsViolationException;
 import com.mls.survey.exception.EntityNotFoundException;
+import java.util.List;
 
 /**
  *
@@ -27,11 +28,11 @@ public interface AnswerService {
     
     /**
      * Creates a new answer
-     * @param answer
+     * @param answers
      * @return
      * @throws ConstraintsViolationException 
      */
-    Answer create(Answer answer) throws ConstraintsViolationException;
+    List<Answer> create(List<Answer> answers) throws ConstraintsViolationException;
     
     /**
      * Update answer

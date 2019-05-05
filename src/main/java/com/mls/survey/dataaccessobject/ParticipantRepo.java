@@ -6,6 +6,7 @@
 package com.mls.survey.dataaccessobject;
 
 import com.mls.survey.domainobject.Participant;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -14,4 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface ParticipantRepo extends JpaRepository<Participant, Long> {
     
+    Optional<Participant> findByEmail(String email);
 }
