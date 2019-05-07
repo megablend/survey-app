@@ -9,13 +9,17 @@ import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author Megafu Charles <noniboycharsy@gmail.com>
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ParticipantResponseDTO {
     
     @Email(message = "Please provide a valid email address")

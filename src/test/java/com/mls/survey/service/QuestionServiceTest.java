@@ -110,6 +110,7 @@ public class QuestionServiceTest {
         when(questionRepo.findById(isA(Long.class))).thenReturn(Optional.of(mockQuestion));
         
         questionService.update(1, new QuestionDTO());
+        verify(questionRepo, times(1)).findById(isA(Long.class));
     }
     
     /**
@@ -125,6 +126,9 @@ public class QuestionServiceTest {
         doNothing().when(questionRepo).delete(isA(Question.class));
         
         questionService.delete(1);
+        verify(questionRepo, times(1)).findById(isA(Long.class));
+        verify(answerService, times(1)).deleteAnswersByQuestion(isA(Question.class));
+        verify(questionRepo, times(1)).delete(isA(Question.class));
     }
     
     /**
@@ -132,6 +136,7 @@ public class QuestionServiceTest {
      */
     @Test
     public void testGetQuestions() {
+        
         List<Question> mockQuestions = mockQuestions();
         when(questionRepo.findAll()).thenReturn(mockQuestions);
         

@@ -204,6 +204,7 @@ public class QuestionControllerTest {
                             .accept(MediaType.APPLICATION_JSON))
                             .andExpect(status().isOk())
                             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                            .andExpect(jsonPath("$.question", Matchers.is(response.getQuestion())))
                             .andExpect(jsonPath("$.total", Matchers.is(response.getTotal())))
                             .andExpect(jsonPath("$.answers[0].answer", Matchers.is(response.getAnswers().get(0).getAnswer())))
                             .andExpect(jsonPath("$.answers[0].percentage", Matchers.is(response.getAnswers().get(0).getPercentage()))).andReturn();

@@ -7,7 +7,9 @@ package com.mls.survey.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mls.survey.dataaccessobject.projection.AnswerOnly;
 import com.mls.survey.datatransferobject.AnswerDistributionDTO;
+import com.mls.survey.datatransferobject.ResponseDTO;
 import com.mls.survey.datatransferobject.ResponseDistributionDTO;
 import com.mls.survey.domainobject.Answer;
 import com.mls.survey.domainobject.Question;
@@ -53,11 +55,31 @@ public final class Util {
     }
     
     /**
+     * Mock Response DTO
+     * @return 
+     */
+    public static List<ResponseDTO> mockResponseDTO() {
+        return Stream.of(new ResponseDTO(1L, 1L), new ResponseDTO(2L, 2L), new ResponseDTO(3L, 3L)).collect(toList());
+    }
+    
+    public static List<AnswerOnly> mockResponseDistAnswers() {
+        return Stream.of((AnswerOnly) () -> () -> "yes", (AnswerOnly) () -> () -> "no").collect(toList());
+    }
+    
+    /**
      * Mock Response Distribution
      * @return 
      */
     public static ResponseDistributionDTO mockResponseDistribution() {
-        return new ResponseDistributionDTO(2, mockResponseAnswers());
+        return new ResponseDistributionDTO("Question Asked", 2, mockResponseAnswers());
+    }
+    
+    /**
+     * Mock Answer
+     * @return 
+     */
+    public static Answer mockAnswer() {
+        return new Answer("yes", mockQuestion());
     }
     
     /**
@@ -83,5 +105,9 @@ public final class Util {
             log.error("Unable to convert object to a string", e);
         }
         return null;
+    }
+    
+    public static double answersPercentage(int totalAnswers, int totalResponse) {
+        return ((double) (totalAnswers * 100) / totalResponse);
     }
 }

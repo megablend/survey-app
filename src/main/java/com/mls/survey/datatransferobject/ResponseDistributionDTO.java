@@ -17,6 +17,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class ResponseDistributionDTO {
     
+    private String question;
+    
     private int total;
     
     List<AnswerDistributionDTO> answers;

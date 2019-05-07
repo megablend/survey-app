@@ -6,7 +6,9 @@
 package com.mls.survey.datatransferobject;
 
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -15,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResponseDTO {
     
     @NotNull(message = "The question must not be null")

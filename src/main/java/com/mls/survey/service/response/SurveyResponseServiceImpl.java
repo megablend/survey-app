@@ -79,14 +79,14 @@ public class SurveyResponseServiceImpl implements SurveyResponseService {
     public ResponseDistributionDTO getResponsesToQuestion(Question question) {
         List<AnswerOnly> responses = surveyResponseRepo.findByQuestion(question);
         Map<QuestionAnswer, List<AnswerOnly>> answersGrouped = responses.stream().collect(groupingBy(AnswerOnly::getAnswer));
-        return computeAnswersDistribution(responses.size(), answersGrouped);
+        return computeAnswersDistribution(responses.size(), question.getQuestion(), answersGrouped);
     }
     
-    private ResponseDistributionDTO computeAnswersDistribution(int total, Map<QuestionAnswer, List<AnswerOnly>> answersGrouped) {
+    private ResponseDistributionDTO computeAnswersDistribution(int total, String question, Map<QuestionAnswer, List<AnswerOnly>> answersGrouped) {
         List<AnswerDistributionDTO> answersStat = answersGrouped.entrySet().stream()
                                                                            .map(e -> getAnswersDistribution(e, total))
                                                                            .collect(toList());
-        return new ResponseDistributionDTO(total, answersStat);
+        return new ResponseDistributionDTO(question, total, answersStat);
     }
     
     private AnswerDistributionDTO getAnswersDistribution(Entry entry, int total) {
