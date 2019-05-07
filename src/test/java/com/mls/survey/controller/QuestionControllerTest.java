@@ -18,6 +18,7 @@ import static com.mls.survey.util.Util.mockQuestions;
 import static com.mls.survey.util.Util.mockResponseDistribution;
 import org.hamcrest.Matchers;
 import static org.junit.Assert.assertEquals;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
@@ -63,6 +64,7 @@ public class QuestionControllerTest {
     @MockBean
     private SurveyResponseService surveyResponseService;
     
+    @Before
     public void setup() {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
